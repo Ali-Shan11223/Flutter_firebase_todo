@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_todo_app/ui/auth/signup_screen.dart';
+import 'package:firebase_todo_app/utils/toast_message.dart';
 import 'package:flutter/material.dart';
 
 import '../../utils/size_const.dart';
@@ -18,6 +20,9 @@ class _LogInScreenState extends State<LogInScreen> {
   final passwordController = TextEditingController();
   final formKey = GlobalKey<FormState>();
   bool passwordObscured = true;
+  bool loading = false;
+
+  final auth = FirebaseAuth.instance;
 
   @override
   void dispose() {
@@ -183,12 +188,10 @@ class _LogInScreenState extends State<LogInScreen> {
                 height(50),
                 RoundButton(
                     title: 'Login',
+                    loading: loading,
                     ontap: () {
                       if (formKey.currentState!.validate()) {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const TodoListScreen()));
+                        signIn();
                       }
                     }),
                 height(20),
@@ -220,6 +223,25 @@ class _LogInScreenState extends State<LogInScreen> {
         ),
       ),
     );
+  }
+
+  void signIn() {
+    setState(() {
+      loading = true;
+    });
+    auth
+        .signInWithEmailAndPassword(
+            email: emailController.text, password: passwordController.text)
+        .then((value) {
+      setState(() {
+        loading = false;
+      });
+      Utils().toastMessage('Login Successfully');
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const TodoListScreen()));
+    }).onError((error, stackTrace) {
+      Utils().toastMessage(error.toString());
+    });
   }
 
   bool isEmailValid(String email) {

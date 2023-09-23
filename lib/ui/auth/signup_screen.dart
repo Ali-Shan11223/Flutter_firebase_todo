@@ -212,35 +212,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       loading: loading,
                       ontap: () async {
                         if (formKey.currentState!.validate()) {
-                          setState(() {
-                            loading = true;
-                          });
-                          auth
-                              .createUserWithEmailAndPassword(
-                                  email: emailController.text,
-                                  password: passwordController.text)
-                              .then((value) {
-                            User? user = auth.currentUser;
-                            if (user != null) {
-                              ref.child('users').child(user.uid).set({
-                                'uId': user.uid,
-                                'name': nameController.text,
-                                'email': emailController.text,
-                                'profileImage': '',
-                                'dateTime':
-                                    DateTime.now().microsecondsSinceEpoch
-                              });
-                            }
-                            setState(() {
-                              loading = false;
-                            });
-                            Utils().toastMessage('Signup Successfully');
-                          }).onError((error, stackTrace) {
-                            setState(() {
-                              loading = false;
-                            });
-                            Utils().toastMessage(error.toString());
-                          });
+                          signUp();
                         }
                       }),
                   height(20),
@@ -273,6 +245,36 @@ class _SignUpScreenState extends State<SignUpScreen> {
         ),
       ),
     );
+  }
+
+  void signUp() {
+    setState(() {
+      loading = true;
+    });
+    auth
+        .createUserWithEmailAndPassword(
+            email: emailController.text, password: passwordController.text)
+        .then((value) {
+      User? user = auth.currentUser;
+      if (user != null) {
+        ref.child('users').child(user.uid).set({
+          'uId': user.uid,
+          'name': nameController.text,
+          'email': emailController.text,
+          'profileImage': '',
+          'dateTime': DateTime.now().microsecondsSinceEpoch
+        });
+      }
+      setState(() {
+        loading = false;
+      });
+      Utils().toastMessage('Signup Successfully');
+    }).onError((error, stackTrace) {
+      setState(() {
+        loading = false;
+      });
+      Utils().toastMessage(error.toString());
+    });
   }
 
   bool isEmailValid(String email) {

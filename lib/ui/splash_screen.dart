@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../splash services/splash_services.dart';
+import '../firebase services/splash_services.dart';
 import '../utils/size_const.dart';
 
 class SplashScreen extends StatefulWidget {

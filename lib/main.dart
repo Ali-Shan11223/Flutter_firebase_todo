@@ -23,22 +23,19 @@ class MyApp extends StatelessWidget {
       theme: ThemeData.light(
         useMaterial3: true,
       ).copyWith(
-        scaffoldBackgroundColor: Colors.grey.shade300,
-        appBarTheme: const AppBarTheme(
-          backgroundColor: Color(0xFF6C4CA3),
-          titleTextStyle: TextStyle(
-            fontSize: 24,
-            color: Colors.white,
+          scaffoldBackgroundColor: Colors.grey.shade300,
+          appBarTheme: const AppBarTheme(
+            backgroundColor: Color(0xFF6C4CA3),
+            titleTextStyle: TextStyle(fontSize: 24, color: Colors.white),
+            iconTheme: IconThemeData(color: Colors.white),
+            actionsIconTheme: IconThemeData(color: Colors.white),
+            centerTitle: true,
           ),
-          iconTheme: IconThemeData(
-            color: Colors.white,
-          ),
-          actionsIconTheme: IconThemeData(
-            color: Colors.white,
-          ),
-          centerTitle: true,
-        ),
-      ),
+          floatingActionButtonTheme: FloatingActionButtonThemeData(
+            backgroundColor: Color(0xFF6C4CA3),
+            foregroundColor: Colors.white,
+            
+          )),
       home: const SplashScreen(),
     );
   }
