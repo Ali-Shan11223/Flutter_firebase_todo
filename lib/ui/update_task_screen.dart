@@ -4,26 +4,34 @@ import 'package:firebase_todo_app/utils/size_const.dart';
 import 'package:firebase_todo_app/utils/toast_message.dart';
 import 'package:flutter/material.dart';
 
+import '../models/task_model.dart';
 import '../widgets/round_button.dart';
 
-class AddTaskScreen extends StatefulWidget {
-  const AddTaskScreen({super.key});
+class UpdateTaskScreen extends StatefulWidget {
+  final TaskModel taskModel;
+  const UpdateTaskScreen({super.key, required this.taskModel});
 
   @override
-  State<AddTaskScreen> createState() => _AddTaskScreenState();
+  State<UpdateTaskScreen> createState() => _UpdateTaskScreenState();
 }
 
-class _AddTaskScreenState extends State<AddTaskScreen> {
-  final addTaskController = TextEditingController();
+class _UpdateTaskScreenState extends State<UpdateTaskScreen> {
+  final updateTaskController = TextEditingController();
   final ref = FirebaseDatabase.instance.ref();
   final user = FirebaseAuth.instance.currentUser;
   bool loading = false;
 
   @override
+  void initState() {
+    updateTaskController.text = widget.taskModel.taskName.toString();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add Task'),
+        title: const Text('Update Task'),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -31,7 +39,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
           children: [
             height(10),
             TextFormField(
-              controller: addTaskController,
+              controller: updateTaskController,
               keyboardType: TextInputType.text,
               decoration: const InputDecoration(
                 hintText: 'Enter task',
@@ -50,7 +58,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                 title: 'Add Task',
                 loading: loading,
                 ontap: () {
-                  addTask();
+                  updateTask();
                 })
           ],
         ),
@@ -58,21 +66,20 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
     );
   }
 
-  void addTask() {
+  void updateTask() {
     setState(() {
       loading = true;
     });
-    final id = DateTime.now().millisecondsSinceEpoch.toString();
-    ref.child('tasks').child(user!.uid).child(id).set({
-      'taskId': id,
-      'taskName': addTaskController.text,
-      'dateTime': DateTime.now().millisecondsSinceEpoch
-    }).then((value) {
-      Utils().toastMessage('Task Added');
-      addTaskController.clear();
+    ref
+        .child('tasks')
+        .child(user!.uid)
+        .child(widget.taskModel.taskId!)
+        .update({'taskName': updateTaskController.text}).then((value) {
+      Utils().toastMessage('Task updated');
       setState(() {
         loading = false;
       });
+      Navigator.pop(context);
     }).onError((error, stackTrace) {
       Utils().toastMessage(error.toString());
       setState(() {

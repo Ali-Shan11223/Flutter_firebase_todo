@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_todo_app/ui/add_task_screen.dart';
 import 'package:firebase_todo_app/ui/auth/login_screen.dart';
+import 'package:firebase_todo_app/ui/update_task_screen.dart';
 import 'package:firebase_todo_app/utils/toast_message.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -33,7 +34,7 @@ class _TaskListScreenState extends State<TaskListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Todo\'s'),
+        title: const Text('Tasks'),
         actions: [
           IconButton(
               onPressed: () {
@@ -66,11 +67,20 @@ class _TaskListScreenState extends State<TaskListScreen> {
               }
 
               return ListView.builder(
+                  padding: const EdgeInsets.all(10),
                   itemCount: taskList.length,
                   itemBuilder: (context, index) {
                     TaskModel taskObject = taskList[index];
                     return Card(
                       child: ListTile(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => UpdateTaskScreen(
+                                        taskModel: taskObject,
+                                      )));
+                        },
                         title: Text(taskObject.taskName.toString()),
                         subtitle:
                             Text(getHumanReadableTime(taskObject.dateTime!)),
