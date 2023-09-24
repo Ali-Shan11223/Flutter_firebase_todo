@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_todo_app/utils/toast_message.dart';
 import 'package:flutter/material.dart';
 
 import '../../utils/size_const.dart';
@@ -12,6 +14,8 @@ class ForgotPassScreen extends StatefulWidget {
 
 class _ForgotPassScreenState extends State<ForgotPassScreen> {
   final emailController = TextEditingController();
+  final auth = FirebaseAuth.instance;
+  bool loading = false;
 
   @override
   void dispose() {
@@ -56,7 +60,27 @@ class _ForgotPassScreenState extends State<ForgotPassScreen> {
               ),
             ),
             height(50),
-            RoundButton(title: 'Forgot', ontap: () {})
+            RoundButton(
+                title: 'Forgot',
+                loading: loading,
+                ontap: () {
+                  setState(() {
+                    loading = true;
+                  });
+                  auth
+                      .sendPasswordResetEmail(email: emailController.text)
+                      .then((value) {
+                    setState(() {
+                      loading = false;
+                    });
+                    Utils().toastMessage('We have sent an email, check it.');
+                  }).onError((error, stackTrace) {
+                    setState(() {
+                      loading = false;
+                    });
+                    Utils().toastMessage(error.toString());
+                  });
+                })
           ],
         ),
       ),

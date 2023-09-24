@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_todo_app/ui/todo_list_screen.dart';
+import 'package:firebase_todo_app/ui/task_list_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../ui/auth/login_screen.dart';
@@ -15,7 +15,7 @@ class SplashServices {
   if(user != null){
     Timer(const Duration(seconds: 3), () {
       Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const TodoListScreen()));
+          MaterialPageRoute(builder: (context) => const TaskListScreen()));
     });
   }else{
     Timer(const Duration(seconds: 3), () {

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 import '../../utils/size_const.dart';
 import '../../widgets/round_button.dart';
-import '../todo_list_screen.dart';
+import '../task_list_screen.dart';
 import 'forgot_pass_screen.dart';
 
 class LogInScreen extends StatefulWidget {
@@ -238,7 +238,7 @@ class _LogInScreenState extends State<LogInScreen> {
       });
       Utils().toastMessage('Login Successfully');
       Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const TodoListScreen()));
+          MaterialPageRoute(builder: (context) => const TaskListScreen()));
     }).onError((error, stackTrace) {
       Utils().toastMessage(error.toString());
     });
