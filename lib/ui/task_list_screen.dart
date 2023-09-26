@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_todo_app/ui/add_task_screen.dart';
 import 'package:firebase_todo_app/ui/auth/login_screen.dart';
+import 'package:firebase_todo_app/ui/profile_screen.dart';
 import 'package:firebase_todo_app/ui/update_task_screen.dart';
 import 'package:firebase_todo_app/utils/toast_message.dart';
 import 'package:flutter/material.dart';
@@ -47,7 +48,11 @@ class _TaskListScreenState extends State<TaskListScreen> {
               },
               icon: const Icon(Icons.logout)),
           IconButton(
-              onPressed: () {}, icon: const Icon(Icons.person_4_outlined))
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => ProfileScreen()));
+              },
+              icon: const Icon(Icons.person_4_outlined))
         ],
         automaticallyImplyLeading: false,
       ),

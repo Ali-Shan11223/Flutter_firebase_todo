@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
             actionsIconTheme: IconThemeData(color: Colors.white),
             centerTitle: true,
           ),
-          floatingActionButtonTheme: FloatingActionButtonThemeData(
+          floatingActionButtonTheme: const FloatingActionButtonThemeData(
             backgroundColor: Color(0xFF6C4CA3),
             foregroundColor: Colors.white,
             
